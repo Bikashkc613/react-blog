@@ -1,16 +1,28 @@
-import React from 'react'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
+import { useContext } from 'react'
+import { AuthContext } from '../context/AuthContext'
+import { ToastContainer, toast } from 'react-toastify'
 
 const Login = () => {
+  const { login } = useContext(AuthContext)
+
   const postFormData = async values => {
+    console.log(values)
     try {
       const response = await axios.post(
-        'https://blog-hqx2.onrender.com/user/register',
+        'https://blog-hqx2.onrender.com/user/login',
         values
       )
+
+      console.log(response)
       toast.success('user registered successfully')
+      const token = response.data.token
+      const user = response.data.user
+      login(token, user)
+
+      console.log(response.data)
     } catch (error) {
       console.log(error)
       toast.error('User registration failed')
@@ -34,9 +46,6 @@ const Login = () => {
         <Formik
           initialValues={{ name: '', email: '', password: '' }}
           validationSchema={Yup.object({
-            name: Yup.string()
-              .min(3, 'Minimum 3 characters')
-              .required('Username is required'),
             email: Yup.string().email().required('This field is required'),
             password: Yup.string()
               .min(8, 'minimum eight characters')
