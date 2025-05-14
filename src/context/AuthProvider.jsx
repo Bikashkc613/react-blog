@@ -6,14 +6,14 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
 
   console.log(token, 'This is token')
-  console.log(JSON.stringify(user), 'This is user')
+  // console.log(JSON.stringify(user), 'This is user')
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token')
     const storedUser = localStorage.getItem('user')
     if (storedToken && storedUser) {
       setToken(storedToken)
-      setUser(storedUser)
+      setUser(JSON.parse(storedUser))
     }
   }, [])
 
@@ -29,6 +29,7 @@ const AuthProvider = ({ children }) => {
 
   const login = (loginToken, userDetails) => {
     setToken(loginToken)
+    console.log(userDetails, 'user details')
     setUser(userDetails)
   }
   return (

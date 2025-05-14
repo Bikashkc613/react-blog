@@ -1,21 +1,57 @@
-import React from 'react'
-import Register from './pages/Register'
-import Login from './pages/Login'
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import './App.css'
+import ProtectedRoute from './components/ProtectedRoute'
+import CreateBlog from './pages/CreateBlog'
 import Home from './pages/Home'
-import AuthProvider from './context/AuthProvider'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import SingleBlogPage from './pages/SingleBlogPage'
+import MyBlog from './pages/MyBlog'
 
-const App = () => {
+function App () {
   return (
-    <div>
+    <main>
       <Router>
         <Routes>
-          <Route path='/blogs' element={<Home />} />
+          <Route
+            path='/'
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/singleblogs/:id'
+            element={
+              <ProtectedRoute>
+                <SingleBlogPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path='/myblog'
+            element={
+              <ProtectedRoute>
+                <MyBlog />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path='create-blog'
+            element={
+              <ProtectedRoute>
+                <CreateBlog />
+              </ProtectedRoute>
+            }
+          />
           <Route path='/signup' element={<Register />} />
-          <Route path='/Login' element={<Login />} />
+          <Route path='/login' element={<Login />} />
         </Routes>
       </Router>
-    </div>
+    </main>
   )
 }
 

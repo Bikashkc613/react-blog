@@ -4,9 +4,11 @@ import axios from 'axios'
 import { useContext } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { ToastContainer, toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const { login } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   const postFormData = async values => {
     console.log(values)
@@ -20,7 +22,9 @@ const Login = () => {
       toast.success('user registered successfully')
       const token = response.data.token
       const user = response.data.user
+      console.log(user, 'user information')
       login(token, user)
+      navigate('/')
 
       console.log(response.data)
     } catch (error) {
@@ -48,7 +52,7 @@ const Login = () => {
           validationSchema={Yup.object({
             email: Yup.string().email().required('This field is required'),
             password: Yup.string()
-              .min(8, 'minimum eight characters')
+              .min(6, 'minimum six characters')
               .required('Password is required')
           })}
           onSubmit={values => {
